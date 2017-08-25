@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1056111181175",
+    "firebase_url": "https://knowledgeplanet-177910.firebaseio.com",
+    "project_id": "knowledgeplanet-177910",
+    "storage_bucket": "knowledgeplanet-177910.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056111181175:android:4c20c617e8cde9af",
+        "android_client_info": {
+          "package_name": "com.knowledgeplanet.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056111181175-cmnivq0pb80ouksnn8q0van0papmar00.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1056111181175-q61ao2ci4an6s7je7vpj6vl4a35t71r4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knowledgeplanet.android",
+            "certificate_hash": "49b86b23d928291af8d9ff70df239a3f273e5cc7"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcfI3Py4WQMDV87qunWuqLfSbyRC5K6wM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056111181175-cmnivq0pb80ouksnn8q0van0papmar00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
