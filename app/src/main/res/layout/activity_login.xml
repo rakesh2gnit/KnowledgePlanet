@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_light"
-    tools:context="android.planet.knowledge.com.knowledgeplanet.LoginActivity">
+    tools:context="com.knowledgeplanet.android.LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,5 +23,12 @@
         android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/googleselector"/>
+
+    <ProgressBar
+        android:id="@+id/pBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
