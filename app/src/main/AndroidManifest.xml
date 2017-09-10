@@ -17,12 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:label="MainActivity"/>
-        <activity android:name=".CourseCategory"
-            android:label="Category"/>
-        <activity android:name=".SubCourseActivity"
-            android:label="Sub Category"/>
+        <activity android:name=".CourseActivity"
+            android:label="Courses"/>
+
+        <activity android:name=".SubjectActivity"
+            android:label="Subjects"/>
     </application>
 
 </manifest>

@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Admin on 09-09-2017.
+ * Created by Admin on 11-09-2017.
  */
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CommentViewHolder> {
+public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.CommentViewHolder> {
 
     private static final String TAG = "CourseAdapter";
     private Context mContext;
@@ -35,7 +35,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CommentVie
     private List<String> mCommentIds = new ArrayList<>();
     private List<Course> mComments = new ArrayList<>();
 
-    public CourseAdapter(final Context context, DatabaseReference ref) {
+    public SubjectAdapter(final Context context, DatabaseReference ref) {
         mContext = context;
         mDatabaseReference = ref;
 
@@ -138,8 +138,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CommentVie
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         Course comment = mComments.get(position);
-        holder.course.setText(comment.course);
-        //holder.bodyView.setText(comment.text);
+        holder.subject.setText(comment.subject);
+        holder.imageName.setText(comment.imageName);
     }
 
     @Override
@@ -155,23 +155,24 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CommentVie
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView course;
-        //public TextView bodyView;
+        public TextView subject;
+        public TextView imageName;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
 
-            course = (TextView) itemView.findViewById(R.id.course);
-            //bodyView = (TextView) itemView.findViewById(R.id.comment_body);
+            subject = (TextView) itemView.findViewById(R.id.course);
+            imageName = (TextView) itemView.findViewById(R.id.genre);
+            imageName.setVisibility(View.VISIBLE);
         }
     }
 
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
 
-        private ClickListener clicklistener;
+        private CourseAdapter.ClickListener clicklistener;
         private GestureDetector gestureDetector;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
+        public RecyclerTouchListener(Context context, final RecyclerView recycleView, final CourseAdapter.ClickListener clicklistener){
 
             this.clicklistener=clicklistener;
             gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
@@ -216,4 +217,3 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CommentVie
         public void onLongClick(View view, int position);
     }
 }
-

@@ -1,35 +1,43 @@
 {
   "project_info": {
-    "project_number": "1056111181175",
-    "firebase_url": "https://knowledgeplanet-177910.firebaseio.com",
-    "project_id": "knowledgeplanet-177910",
-    "storage_bucket": "knowledgeplanet-177910.appspot.com"
+    "project_number": "561560332313",
+    "firebase_url": "https://knowledgeplanetadmin-178916.firebaseio.com",
+    "project_id": "knowledgeplanetadmin-178916",
+    "storage_bucket": "knowledgeplanetadmin-178916.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1056111181175:android:4c20c617e8cde9af",
+        "mobilesdk_app_id": "1:561560332313:android:e8adce6b5ce6c38a",
         "android_client_info": {
-          "package_name": "com.knowledgeplanet.android"
+          "package_name": "com.knowledgeplanet.admin.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1056111181175-cmnivq0pb80ouksnn8q0van0papmar00.apps.googleusercontent.com",
+          "client_id": "561560332313-45m9kk0i02tvt8vstms79t3i27ubb7nk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knowledgeplanet.admin.android",
+            "certificate_hash": "7386d7d241f6167ee2962d0b4e2dbf8bdf7f62b6"
+          }
+        },
+        {
+          "client_id": "561560332313-63hdohuf22n6bvsq7jihc7vncojdo4uk.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "1056111181175-q61ao2ci4an6s7je7vpj6vl4a35t71r4.apps.googleusercontent.com",
+          "client_id": "561560332313-nei4oeph2ta9lg6sqhffojltshn9koad.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.knowledgeplanet.android",
+            "package_name": "com.knowledgeplanet.admin.android",
             "certificate_hash": "49b86b23d928291af8d9ff70df239a3f273e5cc7"
           }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDcfI3Py4WQMDV87qunWuqLfSbyRC5K6wM"
+          "current_key": "AIzaSyBkgb5wizLTlrMcN81kuL5QRTkl7cyCyLk"
         }
       ],
       "services": {
@@ -40,7 +48,51 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1056111181175-cmnivq0pb80ouksnn8q0van0papmar00.apps.googleusercontent.com",
+              "client_id": "561560332313-63hdohuf22n6bvsq7jihc7vncojdo4uk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561560332313:android:4c20c617e8cde9af",
+        "android_client_info": {
+          "package_name": "com.knowledgeplanet.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561560332313-7a2h163bj5b5diuoulf8g1ehv9pap74e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knowledgeplanet.android",
+            "certificate_hash": "49b86b23d928291af8d9ff70df239a3f273e5cc7"
+          }
+        },
+        {
+          "client_id": "561560332313-63hdohuf22n6bvsq7jihc7vncojdo4uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkgb5wizLTlrMcN81kuL5QRTkl7cyCyLk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561560332313-63hdohuf22n6bvsq7jihc7vncojdo4uk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

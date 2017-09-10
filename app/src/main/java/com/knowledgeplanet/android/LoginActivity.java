@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void goToMainActivity(FirebaseUser user) {
         if (user != null) {
-            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent mainIntent = new Intent(LoginActivity.this, CourseActivity.class);
             startActivity(mainIntent);
             finish();
         }
