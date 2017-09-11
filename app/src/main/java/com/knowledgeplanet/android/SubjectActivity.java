@@ -1,11 +1,20 @@
 package com.knowledgeplanet.android;
 
+import android.*;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,6 +32,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,9 +41,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.knowledgeplanet.android.adapter.CourseAdapter;
 import com.knowledgeplanet.android.adapter.SubjectAdapter;
 import com.knowledgeplanet.android.model.Course;
+
+import java.io.File;
 
 /**
  * Created by Admin on 11-09-2017.
@@ -56,6 +72,9 @@ public class SubjectActivity extends AppCompatActivity implements GoogleApiClien
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         courseName = getIntent().getStringExtra("courseName");
 
@@ -92,10 +111,15 @@ public class SubjectActivity extends AppCompatActivity implements GoogleApiClien
             @Override
             public void onClick(View view, int position) {
                 //Courses courses = courseList.get(position);
-                final TextView txtCourse = (TextView) view.findViewById(R.id.course);
-                Toast.makeText(SubjectActivity.this, "Single Click on position        :" + position + " , " + txtCourse.getText().toString().trim(),
-                        Toast.LENGTH_SHORT).show();
-                showDialog(txtCourse.getText().toString().trim());
+                final TextView imageName = (TextView) view.findViewById(R.id.genre);
+                //Toast.makeText(SubjectActivity.this, "Single Click on position        :" + position + " , " + txtCourse.getText().toString().trim(),
+                //Toast.LENGTH_SHORT).show();
+                if (imageName.getText().toString().trim().length() != 0) {
+                    downloadFile(imageName.getText().toString().trim());
+                } else {
+                    Toast.makeText(SubjectActivity.this, "No File Attach", Toast.LENGTH_SHORT).show();
+                }
+                //showDialog(txtCourse.getText().toString().trim());
             }
 
             @Override
@@ -244,5 +268,74 @@ public class SubjectActivity extends AppCompatActivity implements GoogleApiClien
         Intent mainIntent = new Intent(SubjectActivity.this, LoginActivity.class);
         startActivity(mainIntent);
         finish();
+    }
+
+    private void downloadFile(String fileName) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+            return;
+        }
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://knowledgeplanetadmin-178916.appspot.com");
+        StorageReference islandRef = storageRef.child(fileName);
+
+        File rootPath = new File(Environment.getExternalStorageDirectory(), "Knowledge Planet");
+        if (!rootPath.exists()) {
+            rootPath.mkdirs();
+        }
+
+        final File localFile = new File(rootPath, fileName);
+
+        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Log.e("firebase ", ";local tem file created  created " + localFile.toString());
+                //  updateDb(timestamp,localFile.toString(),position);
+                String extension = localFile.getAbsolutePath().substring(localFile.getAbsolutePath().lastIndexOf("."));
+                Log.e(TAG, "extn:" + extension);
+                if (extension.equalsIgnoreCase(".pdf")) {
+                    openPdf(localFile);
+                } else {
+                    openImage(localFile);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("firebase ", ";local tem file not created  created " + exception.toString());
+            }
+        });
+    }
+
+    private void openPdf(File file) {
+        Intent target = new Intent(Intent.ACTION_VIEW);
+        target.setDataAndType(Uri.fromFile(file), "application/pdf");
+        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        Intent intent = Intent.createChooser(target, "Open File");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // Instruct the user to install a PDF reader here, or something
+        }
+    }
+
+    private void openImage(File file) {
+        Log.e(TAG, "Inside open image");
+        /*Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), "image*//*");
+        startActivity(intent);*/
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+        intent.setDataAndType(uri, "image/*");
+        startActivity(intent);
     }
 }
