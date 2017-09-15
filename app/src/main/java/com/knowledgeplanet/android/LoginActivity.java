@@ -1,6 +1,8 @@
 package com.knowledgeplanet.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.knowledgeplanet.android.model.Course;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -96,7 +99,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void goToMainActivity(FirebaseUser user) {
         if (user != null) {
-            Intent mainIntent = new Intent(LoginActivity.this, CourseActivity.class);
+            SharedPrefs.save(this, "name", user.getDisplayName());
+            SharedPrefs.save(this, "email", user.getEmail());
+            SharedPrefs.save(this, "imageurl", user.getPhotoUrl().toString());
+            Log.e("LoginActivity","Url:"+user.getPhotoUrl());
+
+            Intent mainIntent = new Intent(LoginActivity.this, DrawerActivity.class);//CourseActivity
             startActivity(mainIntent);
             finish();
         }
