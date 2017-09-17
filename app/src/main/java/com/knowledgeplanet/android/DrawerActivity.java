@@ -1,18 +1,19 @@
 package com.knowledgeplanet.android;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.Log;
+
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -33,20 +35,24 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.knowledgeplanet.android.model.Course;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, CourseFragment.OnListFragmentInteractionListener {
 
     private String name, email;
     private TextView tvName, tvEmail;
     private ImageView ivProfilePics;
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
+    FloatingActionButton fab;
+    List<String> emailList = Arrays.asList("rakesh@gleecus.com", "rakesh2gnit@gmail.com");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +74,10 @@ public class DrawerActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        email = SharedPrefs.getString(this, "email");
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,6 +101,12 @@ public class DrawerActivity extends AppCompatActivity
         tvName = (TextView) header.findViewById(R.id.header_name);
         tvEmail = (TextView) header.findViewById(R.id.header_email);
 
+        if(emailList.contains(email)){
+            fab.setVisibility(View.VISIBLE);
+        }else{
+            fab.setVisibility(View.GONE);
+        }
+
         String imageUri = SharedPrefs.getString(this, "imageurl");
         Picasso.with(this).load(imageUri)
                 .resize(150, 150)
@@ -104,13 +119,17 @@ public class DrawerActivity extends AppCompatActivity
                         imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
                         ivProfilePics.setImageDrawable(imageDrawable);
                     }
+
                     @Override
                     public void onError() {
                         ivProfilePics.setImageResource(R.mipmap.ic_launcher_round);
                     }
                 });
         tvName.setText(SharedPrefs.getString(this, "name"));
-        tvEmail.setText(SharedPrefs.getString(this, "email"));
+        tvEmail.setText(email);
+
+        //add this line to display menu1 when the activity is loaded
+        displaySelectedScreen(R.id.nav_camera);
     }
 
     @Override
@@ -149,26 +168,43 @@ public class DrawerActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        //calling the method displayselectedscreen and passing the id of selected menu
+        displaySelectedScreen(item.getItemId());
 
-        } else if (id == R.id.nav_slideshow) {
+        return true;
+    }
 
-        } else if (id == R.id.nav_manage) {
+    private void displaySelectedScreen(int itemId) {
 
-        } else if (id == R.id.nav_share) {
+        //creating fragment object
+        Fragment fragment = null;
 
-        } else if (id == R.id.nav_send) {
+        //initializing the fragment object which is selected
+        switch (itemId) {
+            case R.id.nav_camera:
+                getSupportActionBar().setTitle("Course");
+                fragment = new CourseFragment();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(DrawerActivity.this, "nav_share", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_send:
+                Toast.makeText(DrawerActivity.this, "nav_send", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
 
+        //replacing the fragment
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mainFrame, fragment);
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void signOut() {
@@ -194,5 +230,10 @@ public class DrawerActivity extends AppCompatActivity
         Intent mainIntent = new Intent(DrawerActivity.this, LoginActivity.class);
         startActivity(mainIntent);
         finish();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Course item) {
+
     }
 }
